@@ -1,5 +1,5 @@
 from .main import process_file
-from langchain.document_loaders import PyMuPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader
 from fastapi import UploadFile
 
 

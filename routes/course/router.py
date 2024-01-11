@@ -3,6 +3,12 @@ import os
 from pydantic import BaseModel
 from fastapi import APIRouter, Depends, HTTPException, UploadFile
 
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain.chains.combine_documents import create_stuff_documents_chain
+
+from prompts.chat import CHAT_PROMPT_TEMPLATE
 from .dto import (
     AddCourseMembers,
     CreateCourseFolderRequest,
@@ -29,9 +35,25 @@ course_router = APIRouter(prefix="/courses", tags=["courses"])
 def course_chat(course_id: int, body: CourseChatRequest):
     print("body", body)
 
-    documents = get_similar_documents_from_files(query=body.message, file_ids=[23, 24])
+    documents = get_similar_documents_from_files(query=body.message, file_ids=[23, 24], match_count=2)
 
-    return documents
+    llm = ChatOpenAI()
+
+    prompt = ChatPromptTemplate.from_template(
+        """Answer the following question based only on the provided context:
+
+    <context>
+    {context}
+    </context>
+
+    Question: {input}"""
+    )
+
+    document_chain = create_stuff_documents_chain(llm, prompt)
+
+    output = document_chain.invoke({"input": body.message, "context": documents})
+
+    return {"output": output, "documents": documents}
 
 
 @course_router.get("/{course_id}", dependencies=[Depends(AuthBearer())])

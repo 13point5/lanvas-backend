@@ -1,7 +1,7 @@
 from .supabase import create_supabase_client
 from settings import OpenAIEnvVars
 
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores.supabase import SupabaseVectorStore
 from langchain.docstore.document import Document
 
