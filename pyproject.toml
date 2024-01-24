@@ -23,6 +23,7 @@ pypdf = "^3.17.3"
 tiktoken = "^0.5.2"
 pymupdf = "^1.23.8"
 langchain-openai = "^0.0.2"
+asyncio = "^3.4.3"
 
 [tool.black]
 line-length = 130

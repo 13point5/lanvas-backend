@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 from middlewares.cors import add_cors_middleware
 
-from routes.course.router import course_router
+from routes.course.router import router as course_router
 
 app = FastAPI()
 

@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 from fastapi import HTTPException, Request, Depends
@@ -31,10 +32,16 @@ class AuthBearer(HTTPBearer):
         self,
         token: str,
     ) -> UserIdentity:
+        if os.environ.get("AUTHENTICATE") == "false":
+            return self.get_test_user()
+
         if verify_token(token):
             return decode_access_token(token)
         else:
             raise HTTPException(status_code=401, detail="Invalid token or api key.")
+
+    def get_test_user(self) -> UserIdentity:
+        return UserIdentity(email="test@example.com", id="51438931-373c-5247-978c-a0dc497aea93")
 
 
 def get_current_user(user: UserIdentity = Depends(AuthBearer())) -> UserIdentity:

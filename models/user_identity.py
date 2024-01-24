@@ -6,4 +6,4 @@ from pydantic import BaseModel
 
 class UserIdentity(BaseModel):
     id: UUID
-    email: Optional[str] = None
+    email: str
