@@ -17,7 +17,7 @@ from middlewares.auth.auth_bearer import get_current_user
 
 from models.user_identity import UserIdentity
 
-from routes.course.schemas import Course, CourseCreateRequest
+from routes.course.schemas import Course, CourseCreateRequest, UserCourse
 from routes.course_members.schemas import CourseMemberRole, CourseMemberRequestItem
 
 from . import deps
@@ -44,20 +44,27 @@ def get_course(course: Course = Depends(deps.get_course)):
     return course
 
 
-@router.post("/")
+@router.post("/", response_model=Course)
 def create_course(
     body: CourseCreateRequest,
-    current_user: UserIdentity = Depends(get_current_user),
+    user: UserIdentity = Depends(get_current_user),
 ):
     course = CourseService.create_course(db=db, title=body.title)
 
     CourseMemberService.add_course_members(
         db=db,
         course_id=course.id,
-        members=[CourseMemberRequestItem(email=current_user.email, role=CourseMemberRole.teacher)],
+        members=[CourseMemberRequestItem(email=user.email, role=CourseMemberRole.teacher)],
     )
 
     return course
+
+
+@router.get("/", response_model=list[UserCourse])
+def get_user_courses(
+    user: UserIdentity = Depends(get_current_user),
+):
+    return CourseService.get_user_courses(db=db, user_email=user.email)
 
 
 @router.post("/{course_id}/chat", dependencies=[Depends(deps.validate_course_membership)])
