@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, UploadFile, HTTPException, Form
-from typing import Annotated
+from typing import Annotated, Optional
 
 from middlewares.auth import AuthBearer
 
@@ -31,8 +31,9 @@ def update_course_material(material_id: int, body: CourseMaterialUpdateRequest):
 
 
 @router.post("/upload")
-async def upload_course_material(course_id: int, folder_id: Annotated[int, Form()], uploadFile: UploadFile) -> CourseMaterial:
-    print("folder_id", folder_id)
+async def upload_course_material(
+    course_id: int, folder_id: Annotated[Optional[int], Form()], uploadFile: UploadFile
+) -> CourseMaterial:
     # check if file type is supported
     if not CourseMaterialUtils.is_file_type_supported(file_data=uploadFile):
         raise HTTPException(status_code=400, detail="File type not supported.")

@@ -30,3 +30,8 @@ def create_course_folder(course_id: int, body: CourseFolderCreateRequest):
 @router.patch("/{folder_id}", response_model=CourseFolder)
 def update_course_folder(folder_id: int, body: CourseFolderUpdateRequest):
     return CourseFolderService.update_course_folder(db=db, folder_id=folder_id, data=body)
+
+
+@router.delete("/{folder_id}")
+def delete_course_folder(folder_id: int):
+    return CourseFolderService.delete_course_folder(db=db, folder_id=folder_id)

@@ -2,10 +2,11 @@ from fastapi import APIRouter, Depends
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
+
+# from langchain_core.output_parsers import StrOutputParser
 from langchain.chains.combine_documents import create_stuff_documents_chain
 
-from prompts.chat import CHAT_PROMPT_TEMPLATE
+# from prompts.chat import CHAT_PROMPT_TEMPLATE
 from .dto import (
     CourseChatRequest,
 )
@@ -39,9 +40,9 @@ router.include_router(course_folders_router)
 router.include_router(course_materials_router)
 
 
-@router.get("/{course_id}", response_model=Course)
-def get_course(course: Course = Depends(deps.get_course)):
-    return course
+@router.get("/{course_id}", response_model=UserCourse)
+def get_user_course(user_course: UserCourse = Depends(deps.get_user_course)):
+    return user_course
 
 
 @router.post("/", response_model=Course)

@@ -20,3 +20,9 @@ def create_course_folder(db: Client, course_id: int, data: CourseFolderCreateReq
 def update_course_folder(db: Client, folder_id: int, data: CourseFolderUpdateRequest):
     res = db.table(TABLE_NAME).update(data.model_dump(exclude_unset=True)).eq("id", folder_id).execute().data
     return CourseFolder(**res[0])
+
+
+def delete_course_folder(db: Client, folder_id: int):
+    res = db.table(TABLE_NAME).delete().eq("id", folder_id).execute().data
+    print("delete_course_folder res: ", res)
+    return res

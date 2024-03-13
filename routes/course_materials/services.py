@@ -26,7 +26,7 @@ def update_course_material(db: Client, material_id: int, data: CourseMaterialUpd
 
 
 def create_course_material(
-    db: Client, course_id: int, folder_id: int, name: str, status: CourseMaterialStatus = CourseMaterialStatus.uploading
+    db: Client, course_id: int, folder_id: Optional[int], name: str, status: CourseMaterialStatus = CourseMaterialStatus.uploading
 ) -> CourseMaterial:
     res = (
         db.table(TABLE_NAME)
