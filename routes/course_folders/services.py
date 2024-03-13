@@ -23,6 +23,7 @@ def update_course_folder(db: Client, folder_id: int, data: CourseFolderUpdateReq
 
 
 def delete_course_folder(db: Client, folder_id: int):
+    # TODO: setup CASCADE delete for course folders, course materials, and embeddings
     res = db.table(TABLE_NAME).delete().eq("id", folder_id).execute().data
     print("delete_course_folder res: ", res)
     return res
