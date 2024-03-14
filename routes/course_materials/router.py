@@ -11,6 +11,7 @@ import routes.course_materials.utils as CourseMaterialUtils
 from routes.course_materials.constants import CourseMaterialStatus
 from routes.course_materials.schemas import CourseMaterial, CourseMaterialUpdateRequest
 
+
 db = create_supabase_client()
 
 router = APIRouter(
@@ -32,8 +33,12 @@ def update_course_material(material_id: int, body: CourseMaterialUpdateRequest):
 
 @router.post("/upload")
 async def upload_course_material(
-    course_id: int, folder_id: Annotated[Optional[int], Form()], uploadFile: UploadFile
+    course_id: int,
+    uploadFile: UploadFile,
+    folder_id: Optional[int] = Form(None),
 ) -> CourseMaterial:
+    print("/upload", course_id, folder_id)
+
     # check if file type is supported
     if not CourseMaterialUtils.is_file_type_supported(file_data=uploadFile):
         raise HTTPException(status_code=400, detail="File type not supported.")

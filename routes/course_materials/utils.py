@@ -22,11 +22,7 @@ async def get_file_embeddings(id: int, file_data: UploadFile):
     loader_class = file_processors[file_extension]
     documents, embeddings = await loader_class(file_data, file_id=id)
     rows = [
-        {
-            "content": doc.page_content,
-            "embedding": embeddings[index],
-            "metadata": doc.metadata,
-        }
+        {"content": doc.page_content, "embedding": embeddings[index], "metadata": doc.metadata, "file_id": id}
         for index, doc in enumerate(documents)
     ]
 
