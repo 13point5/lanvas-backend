@@ -29,6 +29,7 @@ import routes.course_members.services as CourseMemberService
 from routes.course_members.router import router as course_members_router
 from routes.course_folders.router import router as course_folders_router
 from routes.course_materials.router import router as course_materials_router
+from routes.course_chats.router import router as course_chats_router
 
 
 db = create_supabase_client()
@@ -38,6 +39,7 @@ router = APIRouter(prefix="/courses", tags=["courses"], dependencies=[Depends(Au
 router.include_router(course_members_router)
 router.include_router(course_folders_router)
 router.include_router(course_materials_router)
+router.include_router(course_chats_router)
 
 
 @router.get("/{course_id}", response_model=UserCourse)
