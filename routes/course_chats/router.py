@@ -19,8 +19,8 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[CourseChat])
-def get_course_chat(course_id: int):
-    return CourseChatService.get_course_chats(db=db, course_id=course_id)
+def get_course_chats(course_id: int, member=Depends(CourseDeps.validate_course_membership)):
+    return CourseChatService.get_course_chats(db=db, course_id=course_id, member_id=member.id)
 
 
 @router.post("/", response_model=CourseChat)

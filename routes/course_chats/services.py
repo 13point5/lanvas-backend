@@ -7,8 +7,8 @@ from routes.course_chats.schemas import CourseChat, CourseChatCreateRequest, Cou
 TABLE_NAME = "course_chats"
 
 
-def get_course_chats(db: Client, course_id: int) -> list[CourseChat]:
-    res = db.table(TABLE_NAME).select("*").eq("course_id", course_id).execute().data
+def get_course_chats(db: Client, course_id: int, member_id: int) -> list[CourseChat]:
+    res = db.table(TABLE_NAME).select("*").eq("course_id", course_id).eq("member_id", member_id).execute().data
     return [CourseChat(**x) for x in res]
 
 
