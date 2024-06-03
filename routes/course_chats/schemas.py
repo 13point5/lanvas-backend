@@ -16,3 +16,8 @@ class CourseChatCreateRequest(BaseModel):
 
 class CourseChatUpdateRequest(BaseModel):
     title: str
+
+
+class ChatRequest(BaseModel):
+    chat_id: int | None
+    message: str

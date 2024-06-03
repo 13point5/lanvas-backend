@@ -7,7 +7,7 @@ from db.supabase import create_supabase_client
 import routes.course.deps as CourseDeps
 import routes.course_chats.deps as CourseChatDeps
 import routes.course_chat_messages.services as CourseChatMessageService
-from routes.course_chat_messages.schemas import CourseChatMessage, CourseChatMessageCreateRequest
+from routes.course_chat_messages.schemas import CourseChatMessageCreateRequest
 
 db = create_supabase_client()
 
@@ -29,4 +29,6 @@ def get_chat_messages(chat_id: int):
 
 @router.post("/")
 def create_chat_message(chat_id: int, body: CourseChatMessageCreateRequest):
-    return CourseChatMessageService.create_chat_message(db=db, chat_id=chat_id, data=body)
+    return CourseChatMessageService.create_chat_message(
+        db=db, chat_id=chat_id, data=body
+    )
