@@ -98,7 +98,7 @@ def chat(
         db=db,
         chat_id=chat_id,
         data=CourseChatMessageCreateRequest(
-            role="assistant", content="sup", metadata={}
+            role="ai", content="sup", metadata={}
         ),
     )
 

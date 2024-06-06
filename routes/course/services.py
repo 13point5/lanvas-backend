@@ -24,6 +24,19 @@ def create_course(db: Client, title: str) -> Course:
     return Course(**res[0])
 
 
+def delete_course(db: Client, course_id: int):
+    res = db.table(TABLE_NAME).delete().eq("id", course_id).execute().data
+    return res
+
+
 def get_user_courses(db: Client, user_email: str) -> list[UserCourse]:
-    res = db.table(CourseMemberService.TABLE_NAME).select("role, courses(*)").eq("email", user_email).execute().data
-    return [UserCourse(course=item["courses"], role=item["role"]) for item in res]
+    res = (
+        db.table(CourseMemberService.TABLE_NAME)
+        .select("role, courses(*)")
+        .eq("email", user_email)
+        .execute()
+        .data
+    )
+    return [
+        UserCourse(course=item["courses"], role=item["role"]) for item in res
+    ]
