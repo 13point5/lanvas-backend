@@ -4,6 +4,8 @@ from middlewares.auth import AuthBearer
 
 from db.supabase import create_supabase_client
 
+from chains.rag import get_course_rag_chain
+
 import routes.course.deps as CourseDeps
 import routes.course_chats.deps as CourseChatDeps
 import routes.course_chats.services as CourseChatService
@@ -86,20 +88,13 @@ def chat(
         )
         chat_id = chat.id
 
-    human_message = CourseChatMessageService.create_chat_message(
-        db=db,
-        chat_id=chat_id,
-        data=CourseChatMessageCreateRequest(
-            role="human", content=message, metadata={}
-        ),
+    conversational_rag_chain = get_course_rag_chain(
+        course_id=course_id, db_client=db
     )
 
-    ai_response = CourseChatMessageService.create_chat_message(
-        db=db,
-        chat_id=chat_id,
-        data=CourseChatMessageCreateRequest(
-            role="ai", content="sup", metadata={}
-        ),
+    response = conversational_rag_chain.invoke(
+        {"input": message},
+        config={"configurable": {"session_id": chat_id}},
     )
 
-    return {"message": human_message, "response": ai_response}
+    return response

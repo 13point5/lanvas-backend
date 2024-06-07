@@ -1,5 +1,4 @@
-import json
-from typing import List, Optional, Sequence
+from typing import List, Sequence
 
 from supabase import Client
 
@@ -7,7 +6,6 @@ from supabase import Client
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.messages import (
     BaseMessage,
-    message_to_dict,
     messages_from_dict,
 )
 

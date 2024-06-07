@@ -17,12 +17,18 @@ def is_file_type_supported(file_data: UploadFile) -> bool:
     return file_extension in file_processors
 
 
-async def get_file_embeddings(id: int, file_data: UploadFile):
+async def get_file_embeddings(id: int, course_id: int, file_data: UploadFile):
     file_extension = get_file_extension(file_data)
     loader_class = file_processors[file_extension]
     documents, embeddings = await loader_class(file_data, file_id=id)
     rows = [
-        {"content": doc.page_content, "embedding": embeddings[index], "metadata": doc.metadata, "file_id": id}
+        {
+            "content": doc.page_content,
+            "embedding": embeddings[index],
+            "metadata": doc.metadata,
+            "file_id": id,
+            "course_id": course_id,
+        }
         for index, doc in enumerate(documents)
     ]
 
