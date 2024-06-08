@@ -2,7 +2,9 @@ import setup
 
 from db.supabase import create_supabase_client
 
-from routes.course_analytics.services import increment_course_chat_topics_count
+from routes.course_chat_topics.services import (
+    increment_course_chat_topics_count,
+)
 
 db = create_supabase_client()
 

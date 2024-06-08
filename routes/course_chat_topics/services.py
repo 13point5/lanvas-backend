@@ -1,7 +1,7 @@
 from supabase import Client
 from typing import List
 
-from routes.course_analytics.schemas import CourseChatTopic
+from routes.course_chat_topics.schemas import CourseChatTopic
 
 TABLE_NAME = "course_chat_topics"
 

@@ -1,6 +1,6 @@
 import setup
 
-from routes.course_analytics.schemas import CourseChatTopic
+from routes.course_chat_topics.schemas import CourseChatTopic
 
 from analysis.topics import extract_new_and_old_topics, extract_topics
 

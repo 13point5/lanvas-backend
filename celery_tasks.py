@@ -4,7 +4,7 @@ from celery import Celery
 
 from db.supabase import create_supabase_client
 
-from routes.course_analytics.services import (
+from routes.course_chat_topics.services import (
     get_course_chat_topics,
     create_course_chat_topics,
     increment_course_chat_topics_count,

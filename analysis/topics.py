@@ -4,7 +4,7 @@ from typing import List
 import instructor
 from openai import OpenAI
 
-from routes.course_analytics.schemas import CourseChatTopic
+from routes.course_chat_topics.schemas import CourseChatTopic
 
 instructor_client = instructor.from_openai(OpenAI())
 
