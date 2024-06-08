@@ -27,7 +27,7 @@ def get_course_chat_topics(course_id: int):
     )
 
 
-@router.get("/topics")
+@router.get("/misconceptions")
 def get_course_chat_misconceptions(course_id: int):
     return CourseChatMisconceptionsService.get_course_chat_misconceptions(
         db=db, course_id=course_id
