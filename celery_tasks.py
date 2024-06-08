@@ -4,12 +4,13 @@ from celery import Celery
 
 from db.supabase import create_supabase_client
 
-from routes.course_chat_topics.services import (
+from routes.course_analytics.services import (
     get_course_chat_topics,
     create_course_chat_topics,
+    increment_course_chat_topics_count,
 )
 
-from analysis.topics import extract_topics, extract_new_topics
+from analysis.topics import extract_topics, extract_new_and_old_topics
 
 celery = Celery("tasks", broker=os.environ.get("CELERY_BROKER_URL"))
 
@@ -18,18 +19,23 @@ db = create_supabase_client()
 
 @celery.task(name="update_course_chat_topics_from_message")
 def update_course_chat_topics_from_message(course_id: int, message: str):
+    # Get existing topics discussed in the course
     existing_topics = get_course_chat_topics(db=db, course_id=course_id)
 
-    new_topics = extract_topics(message=message)
+    # Get topics discussed in message
+    message_topics = extract_topics(message=message)
 
-    new_unique_topics = extract_new_topics(
-        existing_topics=existing_topics, new_topics=new_topics
+    # Get new and old topics in the message
+    topics = extract_new_and_old_topics(
+        existing_topics=existing_topics, new_topics=message_topics
     )
 
-    new_course_chat_topics = create_course_chat_topics(
-        db=db, course_id=course_id, topics=new_unique_topics
+    # Add new topics
+    create_course_chat_topics(
+        db=db, course_id=course_id, topics=topics.new_topics
     )
 
-    print("New uniq topics", new_course_chat_topics)
-
-    pass
+    # Increment count for existing topics
+    increment_course_chat_topics_count(
+        db=db, course_id=course_id, topic_ids=topics.used_topic_ids
+    )

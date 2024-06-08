@@ -4,7 +4,7 @@ from typing import List
 import instructor
 from openai import OpenAI
 
-from routes.course_chat_topics.schemas import CourseChatTopic
+from routes.course_analytics.schemas import CourseChatTopic
 
 instructor_client = instructor.from_openai(OpenAI())
 
@@ -33,15 +33,16 @@ def extract_topics(message: str) -> List[str]:
 
 class NewTopicsExtractorResponse(BaseModel):
     new_topics: List[str]
+    used_topic_ids: List[int]
 
 
-def extract_new_topics(
+def extract_new_and_old_topics(
     existing_topics: List[CourseChatTopic], new_topics: List[str]
-) -> List[str]:
+) -> NewTopicsExtractorResponse:
     messages = [
         {
             "role": "system",
-            "content": "You are an expert at extracting new topics by comparing two lists.Compare new topics with existing topics by meaning and remove duplicate topics that exist in the first list.",
+            "content": "You are an expert at extracting new topics by comparing two lists.Compare new topics with existing topics by meaning and remove duplicate topics in the new topics list that are already there in the existing topics list. You should also return the IDs of the topics that are used in both lists.",
         },
         {
             "role": "user",
@@ -58,4 +59,4 @@ def extract_new_topics(
         messages=messages,
     )
 
-    return result.new_topics
+    return result
