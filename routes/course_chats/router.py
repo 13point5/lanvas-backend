@@ -84,6 +84,11 @@ def chat(
         kwargs={"course_id": course_id, "message": message},
     )
 
+    celery.send_task(
+        name="update_course_chat_misconceptions_from_message",
+        kwargs={"course_id": course_id, "message": message},
+    )
+
     if chat_id is None:
         chat = CourseChatService.create_course_chat(
             db=db,

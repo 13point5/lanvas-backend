@@ -31,7 +31,7 @@ def get_course_chat_topics(db: Client, course_id: int) -> List[CourseChatTopic]:
 
 def increment_course_chat_topics_count(
     db: Client, course_id: int, topic_ids: List[int]
-) -> CourseChatTopic:
+) -> List[CourseChatTopic]:
     res = (
         db.rpc(
             "increment_course_chat_topics",

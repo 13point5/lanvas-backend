@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class CourseChatTopic(BaseModel):
+class CourseChatMisconception(BaseModel):
     id: int
     name: str
     count: int
