@@ -2,7 +2,17 @@ import setup
 
 from routes.course_chat_topics.schemas import CourseChatTopic
 
-from analysis.topics import extract_new_topics
+from analysis.topics import extract_new_topics, extract_topics
+
+
+def test_topic_extractor():
+    message = "what is learning design?"
+    topics = extract_topics(message=message)
+
+    print("Message:", message)
+    print("Topics found:", topics)
+
+    assert len(topics) != 0, f"Found 0 topics from message: {message}"
 
 
 def test_unique_topic_extractor():

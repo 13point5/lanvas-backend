@@ -6,7 +6,7 @@ from db.supabase import create_supabase_client
 
 from chains.rag import get_course_rag_chain
 
-from analysis.topics import extract_new_topics
+from celery_tasks import celery
 
 import routes.course.deps as CourseDeps
 import routes.course_chats.deps as CourseChatDeps
@@ -18,8 +18,6 @@ from routes.course_chats.schemas import (
     ChatRequest,
 )
 
-import routes.course_chat_messages.services as CourseChatMessageService
-from routes.course_chat_messages.schemas import CourseChatMessageCreateRequest
 
 db = create_supabase_client()
 
@@ -80,6 +78,11 @@ def chat(
 ):
     message = body.message
     chat_id = body.chat_id
+
+    celery.send_task(
+        name="update_course_chat_topics_from_message",
+        kwargs={"course_id": course_id, "message": message},
+    )
 
     if chat_id is None:
         chat = CourseChatService.create_course_chat(

@@ -6,16 +6,16 @@ from routes.course_chat_topics.schemas import CourseChatTopic
 TABLE_NAME = "course_chat_topics"
 
 
-def create_course_chat_topic(
-    db: Client, course_id: int, name: str
-) -> CourseChatTopic:
+def create_course_chat_topics(
+    db: Client, course_id: int, topics: List[str]
+) -> List[CourseChatTopic]:
     res = (
         db.table(TABLE_NAME)
-        .insert({"course_id": course_id, "name": name})
+        .insert([{"course_id": course_id, "name": name} for name in topics])
         .execute()
         .data
     )
-    return CourseChatTopic(**res[0])
+    return [CourseChatTopic(**x) for x in res]
 
 
 def get_course_chat_topics(db: Client, course_id: int) -> List[CourseChatTopic]:
