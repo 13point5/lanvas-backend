@@ -12,7 +12,6 @@ from langchain.chains import (
 )
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_openai import ChatOpenAI
-from langchain_core.retrievers import RetrieverLike
 from langchain_core.runnables import Runnable
 
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)

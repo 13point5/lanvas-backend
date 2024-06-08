@@ -6,6 +6,8 @@ from db.supabase import create_supabase_client
 
 from chains.rag import get_course_rag_chain
 
+from analysis.topics import extract_new_topics
+
 import routes.course.deps as CourseDeps
 import routes.course_chats.deps as CourseChatDeps
 import routes.course_chats.services as CourseChatService
