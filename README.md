@@ -12,6 +12,7 @@ Tech Stack:
 - [Instructor](https://python.useinstructor.com/) - Structured Output Generation
 - [RabbitMQ](https://www.rabbitmq.com/) - Message Broker
 - [Celery](https://docs.celeryq.dev/en/stable/) - Task Queue
+- [PyTest](https://docs.pytest.org/en/8.2.x/) - Testing Framework
 
 ## Architecture
 
@@ -81,3 +82,11 @@ The analysis is powered by Instructor and OpenAI's GPT LLM.
    ```
 
 1. Visit the docs at `http://localhost:8000/docs`
+
+## Tests
+
+There are a few unit tests setup which you can verify by running the following command:
+
+```bash
+poetry run pytest -s
+```
